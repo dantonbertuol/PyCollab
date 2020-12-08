@@ -83,6 +83,7 @@ class MoodleControlador():
             'Accept': 'application/json'
         }
         r = requests.get(endpoint,headers=credencial,verify=self.cert)
+        r.encoding = 'utf-8'
         if r.status_code == 200:
             res = json.loads(r.text)
             return res['name']
@@ -147,6 +148,7 @@ class MoodleControlador():
             'Accept': 'application/json'
         }
         r = requests.get(endpoint,headers=credencial,verify=self.cert)
+        r.encoding = 'utf-8'
         if r.status_code == 200:
             res = json.loads(r.text)
             idx = 0
