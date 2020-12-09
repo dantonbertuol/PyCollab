@@ -6,6 +6,7 @@ from webService import WebService
 import csv
 import sys,getopt
 import json
+from pathlib import Path
 from time import sleep
 
 webService = WebService()
@@ -152,13 +153,14 @@ def crearArchivoChat(url:str,fname:str):
 
              
 
-def downloadrecording(recording_list, name, course_uuid):
+def downloadrecording(recording_list, dates):
       for recording in recording_list:
         recording_data = webService.get_recording_data(recording['recording_id'])
         if recording_data != None:
-            filename = name + ' - ' + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+            filename = recording['recording_id'] + " - " + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
             chatFileName = 'Chat-' + filename
-            fullpath = './downloads/'
+            fullpath = './downloads/'+dates[0]+'_'+dates[1]+'/'
+            Path(fullpath).mkdir(exist_ok=True)
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
             
@@ -193,9 +195,9 @@ def downloadOneRecording(recording, course_uuid):
 
 
 
-def downloadRecordingsUUID(recording_lista):
+def downloadRecordingsUUID(recording_lista, idSession):
     if recording_lista != None:
-        filename = recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+        filename = idSession + " - " + recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
         chatFileName = 'Chat-' + filename
         fullpath = './downloads/'
         print(fullpath + filename)
@@ -241,8 +243,8 @@ def crearReporte(reporte):
 
 
 
-def crearReporteMoodle(reporte):
-   filename = './reports/Collab_Moodle_Session_RecordingReport.csv'
+def crearReporteMoodle(reporte, dates):
+   filename = './reports/Collab_Moodle_Session_RecordingReport_' + dates[0] + '_' + dates[1] + '.csv'
    header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
    file = open(filename, 'w',newline='', encoding='utf-8')
    writer = csv.writer(file)
@@ -256,7 +258,7 @@ def crearReporteMoodle(reporte):
       created = convertirFecha(registro[4])
       writer.writerow([recording_id,recording_name,duration,storage,created])
    file.close()
-   return "Report: Collab_Moodle_Session_RecordingReport.csv created!"
+   return "Report: " + "Collab_Moodle_Session_RecordingReport_" + dates[0] + "_" + dates[1] + ".csv" + " fil created!"
 
 
 
@@ -446,12 +448,12 @@ def main(argv):
 def mainMoodle(argv):
     moodleSessionID = ''
     moodleLTI = ''
-    semanas = 0
+    dates = ''
     try:
-        opts,args = getopt.getopt(argv,"hs:l:w:", ["session=","lti=","weeks="])
+        opts,args = getopt.getopt(argv,"hs:l:w:", ["session=","lti=","dates="])
     except getopt.GetoptError:
         print("The correct params are:")
-        print('CollabMoodle.py -s <MoodlePlugInFileName_SESSION_ID.txt> -w <numberOfWeekBehindToSearch>')
+        print('CollabMoodle.py -s <MoodlePlugInFileName_SESSION_ID.txt> -w <intervalOfDatesBehindToSearch>')
         print('CollabMoodle.py -l <MoodleFileName_LTI.txt> -w <numberOfWeekBehindToSearch>')
         sys.exit(2)
     for opt,arg in opts:
@@ -463,9 +465,9 @@ def mainMoodle(argv):
             moodleSessionID = arg
         elif opt in ('-l', '--lti'):
             moodleLTI = arg
-        elif opt in ('-w', '--weeks'):
-            semanas = int(arg)
-    return [moodleSessionID, moodleLTI, semanas]
+        elif opt in ('-w', '--dates'):
+            dates = arg
+    return [moodleSessionID, moodleLTI, dates]
 
 
 

@@ -122,9 +122,9 @@ class WebService():
         return listaCompleta
 
     
-    def get_moodle_lista_grabaciones(self,sname):
+    def get_moodle_lista_grabaciones(self,sname,sdates):
         moodle = MoodleControlador.MoodleControlador(self.DOMAIN_C,self.getJot(),self.CERT)
-        listaGrabacionesMoodle = moodle.listaMoodleGrabaciones(sname)
+        listaGrabacionesMoodle = moodle.listaMoodleGrabaciones(sname,sdates)
         return listaGrabacionesMoodle
 
     def get_moodle_lista_completa_grbaciones(self):

@@ -3,30 +3,31 @@
 '''
 import requests
 import datetime
-import time 
+import time
 import json
 from cachetools import TTLCache
 import ssl
 import sys
 
+
 class MoodleControlador():
 
-    def __init__(self,domain,token,cert):
+    def __init__(self, domain, token, cert):
         self.domain = domain
-        self.token = token 
-        self.cert = cert 
+        self.token = token
+        self.cert = cert
 
-    #Moodle LTI
+        # Moodle LTI
 
-    def getGrabacionesMoodleContextoLTI(self,moodle_id,tiempo):
-        endpoint = 'https://' + self.domain + '/contexts/?extId=' + moodle_id 
+    def getGrabacionesMoodleContextoLTI(self, moodle_id, tiempo):
+        endpoint = 'https://' + self.domain + '/contexts/?extId=' + moodle_id
         bearer = "Bearer " + self.token
         headers = {
-            "Authorization":bearer,
+            "Authorization": bearer,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        r = requests.get(endpoint,headers=headers,verify=self.cert)
+        r = requests.get(endpoint, headers=headers, verify=self.cert)
         if r.status_code == 200:
             jsonInfo = json.loads(r.text)
             if jsonInfo['size'] > 0:
@@ -35,54 +36,48 @@ class MoodleControlador():
             else:
                 return None
         else:
-            print("Error Moodle ContextoLTI:" , str(r))
+            print("Error Moodle ContextoLTI:", str(r))
 
-
-
-
-    def grabacionesMoodleLTI(self,contexto_id):
-        endpoint = 'https://' + self.domain + '/recordings/?contextId=' + contexto_id 
+    def grabacionesMoodleLTI(self, contexto_id):
+        endpoint = 'https://' + self.domain + '/recordings/?contextId=' + contexto_id
         bearer = "Bearer " + self.token
         headers = {
-            "Authorization":bearer,
+            "Authorization": bearer,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        r = requests.get(endpoint,headers=headers)
+        r = requests.get(endpoint, headers=headers)
         if r.status_code == 200:
             jsonInfo = json.loads(r.text)
             return jsonInfo
         else:
-            print("Error GrabacionesLTL: " , str(r))
+            print("Error GrabacionesLTL: ", str(r))
 
-
-
-    def get_moodleLTI_recording_data(self,recording_id):
+    def get_moodleLTI_recording_data(self, recording_id):
         authStr = 'Bearer ' + self.token
         url = 'https://' + self.domain + '/recordings/' + recording_id + '/data'
-        credencial ={
-           'Authorization': authStr,
-           'Content-Type': 'application/json',
-           'Accept': 'application/json'
+        credencial = {
+            'Authorization': authStr,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
-        r = requests.get(url,headers=credencial, verify=self.cert)
+        r = requests.get(url, headers=credencial, verify=self.cert)
         if r.status_code == 200:
             res = json.loads(r.text)
             return res
         else:
             print(r)
 
+    # Moodle plugin
 
-    #Moodle plugin 
-
-    def moodleSesionName(self,sesionId):
-        endpoint = 'https://' + self.domain + '/sessions/'  + sesionId 
+    def moodleSesionName(self, sesionId):
+        endpoint = 'https://' + self.domain + '/sessions/' + sesionId
         credencial = {
-            "Authorization":"Bearer " + self.token,
+            "Authorization": "Bearer " + self.token,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        r = requests.get(endpoint,headers=credencial,verify=self.cert)
+        r = requests.get(endpoint, headers=credencial, verify=self.cert)
         r.encoding = 'utf-8'
         if r.status_code == 200:
             res = json.loads(r.text)
@@ -90,41 +85,34 @@ class MoodleControlador():
         else:
             print("Error Session:", str(r))
 
-
-
-
-    def listaCompletaSessiones(self,criteria):
+    def listaCompletaSessiones(self, criteria):
         listaFiltrada = []
-        endpoint = 'https://' + self.domain + '/sessions' 
+        endpoint = 'https://' + self.domain + '/sessions'
         credencial = {
-            "Authorization":"Bearer " + self.token,
+            "Authorization": "Bearer " + self.token,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        r = requests.get(endpoint,headers=credencial,verify=self.cert)
+        r = requests.get(endpoint, headers=credencial, verify=self.cert)
         if r.status_code == 200:
             res = json.loads(r.text)
             resultado = res['results']
             for sesion in resultado:
                 if criteria in sesion['name']:
-                   listaFiltrada.append({'id':sesion['id'], 'name':sesion['name']}) 
+                    listaFiltrada.append({'id': sesion['id'], 'name': sesion['name']})
 
             return listaFiltrada
         else:
             print("Error Session:", str(r))
-
-
-
-
 
     def listaCompletaMoodleGrabaciones(self):
         listaGrabaciones = []
         endpoint = 'https://' + self.domain + '/recordings'
         credencial = {
             'Authorization': 'Bearer ' + self.token,
-            'Accept':'application/json'
+            'Accept': 'application/json'
         }
-        r = requests.get(endpoint,headers=credencial,verify=self.cert)
+        r = requests.get(endpoint, headers=credencial, verify=self.cert)
         if r.status_code == 200:
             jsonInfo = json.loads(r.text)
             resultado = jsonInfo['results']
@@ -132,22 +120,20 @@ class MoodleControlador():
                 print("No recordings found")
             else:
                 for grabacion in resultado:
-                    listaGrabaciones.append({'id':grabacion['id'], 'name':grabacion['name']})
+                    listaGrabaciones.append({'id': grabacion['id'], 'name': grabacion['name']})
                 print(listaGrabaciones)
 
         else:
             print("Error listaGrabación Moodle:", str(r))
 
-
-
-    def listaMoodleGrabaciones(self,sname):
-        endpoint = 'https://' + self.domain + '/recordings?name='  + sname 
+    def listaMoodleGrabaciones(self, sname, sdates):
+        endpoint = 'https://' + self.domain + '/recordings?name=' + sname
         credencial = {
-            "Authorization":"Bearer " + self.token,
+            "Authorization": "Bearer " + self.token,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        r = requests.get(endpoint,headers=credencial,verify=self.cert)
+        r = requests.get(endpoint, headers=credencial, verify=self.cert)
         r.encoding = 'utf-8'
         if r.status_code == 200:
             res = json.loads(r.text)
@@ -159,25 +145,34 @@ class MoodleControlador():
                     return None
                 while idx < numero_grabaciones:
                     if 'storageSize' in res['results'][idx]:
-                        recording_ids.append({
-                            'recording_id':res['results'][idx]['id'],
-                            'recording_name':res['results'][idx]['name'],
-                            'duration':res['results'][idx]['duration'],
-                            'storageSize':res['results'][idx]['storageSize'],
-                            'created':res['results'][idx]['created']
-                        })
+
+                        if res['results'][idx]['created'] >= sdates[0] and res['results'][idx][
+                            'created'] <= sdates[1]:
+                            print(res['results'][idx]['created'])
+                            recording_ids.append({
+                                'recording_id': res['results'][idx]['id'],
+                                'recording_name': res['results'][idx]['name'],
+                                'duration': res['results'][idx]['duration'],
+                                'storageSize': res['results'][idx]['storageSize'],
+                                'created': res['results'][idx]['created']
+                            })
                     else:
-                        recording_ids.append({
-                            'recording_id':res['results'][idx]['id'],
-                            'recording_name':res['results'][idx]['name'],
-                            'duration':res['results'][idx]['duration'],
-                            'storageSize':0,
-                            'created':res['results'][idx]['created']
-                        })
+                        try:
+                            if res['results'][idx]['created'] >= sdates[0] and res['results'][idx][
+                                'created'] <= sdates[1]:
+                                print(res['results'][idx]['created'])
+                                recording_ids.append({
+                                    'recording_id': res['results'][idx]['id'],
+                                    'recording_name': res['results'][idx]['name'],
+                                    'duration': res['results'][idx]['duration'],
+                                    'storageSize': 0,
+                                    'created': res['results'][idx]['created']
+                                })
+                        except KeyError:
+                            return None
                     idx += 1
                 return recording_ids
             except TypeError:
-                return None    
+                return None
         else:
             return None
-
