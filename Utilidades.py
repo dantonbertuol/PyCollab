@@ -538,7 +538,7 @@ def calcularTiempo(s):
 
 
 def convertirFecha(fecha):
-   objetoFecha = datetime.datetime.strptime(fecha,'%Y-%m-%dT%H:%M:%S.%fZ')
+   objetoFecha = datetime.datetime.strptime(fecha,'%Y-%m-%d %H:%M:%S')
    return objetoFecha.strftime('%b %d,%Y')
 
 
