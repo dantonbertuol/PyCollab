@@ -144,29 +144,30 @@ class MoodleControlador():
                 if numero_grabaciones <= 0:
                     return None
                 while idx < numero_grabaciones:
+                    dateBr = res['results'][idx]['created'][0:10] + ' ' + res['results'][idx]['created'][11:19]
+                    strToDate = datetime.datetime.strptime(dateBr, "%Y-%m-%d %H:%M:%S") - datetime.timedelta(
+                        minutes=3 * 60)
+                    dateBr = strToDate.strftime('%Y-%m-%d %H:%M:%S')
                     if 'storageSize' in res['results'][idx]:
-
-                        if res['results'][idx]['created'] >= sdates[0] and res['results'][idx][
-                            'created'] <= sdates[1]:
-                            print(res['results'][idx]['created'])
+                        if sdates[0] <= dateBr <= sdates[1]:
+                            print(dateBr)
                             recording_ids.append({
                                 'recording_id': res['results'][idx]['id'],
                                 'recording_name': res['results'][idx]['name'],
                                 'duration': res['results'][idx]['duration'],
                                 'storageSize': res['results'][idx]['storageSize'],
-                                'created': res['results'][idx]['created']
+                                'created': dateBr
                             })
                     else:
                         try:
-                            if res['results'][idx]['created'] >= sdates[0] and res['results'][idx][
-                                'created'] <= sdates[1]:
-                                print(res['results'][idx]['created'])
+                            if sdates[0] <= dateBr <= sdates[1]:
+                                print(dateBr)
                                 recording_ids.append({
                                     'recording_id': res['results'][idx]['id'],
                                     'recording_name': res['results'][idx]['name'],
                                     'duration': res['results'][idx]['duration'],
                                     'storageSize': 0,
-                                    'created': res['results'][idx]['created']
+                                    'created': dateBr
                                 })
                         except KeyError:
                             return None
