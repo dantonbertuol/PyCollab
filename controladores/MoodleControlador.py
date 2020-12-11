@@ -144,22 +144,22 @@ class MoodleControlador():
                 if numero_grabaciones <= 0:
                     return None
                 while idx < numero_grabaciones:
-                    dateBr = res['results'][idx]['created'][0:10] + ' ' + res['results'][idx]['created'][11:19]
-                    strToDate = datetime.datetime.strptime(dateBr, "%Y-%m-%d %H:%M:%S") - datetime.timedelta(
-                        minutes=3 * 60)
-                    dateBr = strToDate.strftime('%Y-%m-%d %H:%M:%S')
-                    if 'storageSize' in res['results'][idx]:
-                        if sdates[0] <= dateBr <= sdates[1]:
-                            print(dateBr)
-                            recording_ids.append({
-                                'recording_id': res['results'][idx]['id'],
-                                'recording_name': res['results'][idx]['name'],
-                                'duration': res['results'][idx]['duration'],
-                                'storageSize': res['results'][idx]['storageSize'],
-                                'created': dateBr
-                            })
-                    else:
-                        try:
+                    try:
+                        dateBr = res['results'][idx]['created'][0:10] + ' ' + res['results'][idx]['created'][11:19]
+                        strToDate = datetime.datetime.strptime(dateBr, "%Y-%m-%d %H:%M:%S") - datetime.timedelta(
+                            minutes=3 * 60)
+                        dateBr = strToDate.strftime('%Y-%m-%d %H:%M:%S')
+                        if 'storageSize' in res['results'][idx]:
+                            if sdates[0] <= dateBr <= sdates[1]:
+                                print(dateBr)
+                                recording_ids.append({
+                                    'recording_id': res['results'][idx]['id'],
+                                    'recording_name': res['results'][idx]['name'],
+                                    'duration': res['results'][idx]['duration'],
+                                    'storageSize': res['results'][idx]['storageSize'],
+                                    'created': dateBr
+                                })
+                        else:
                             if sdates[0] <= dateBr <= sdates[1]:
                                 print(dateBr)
                                 recording_ids.append({
@@ -169,8 +169,8 @@ class MoodleControlador():
                                     'storageSize': 0,
                                     'created': dateBr
                                 })
-                        except KeyError:
-                            return None
+                    except KeyError:
+                        return None
                     idx += 1
                 return recording_ids
             except TypeError:
