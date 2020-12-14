@@ -156,19 +156,23 @@ def crearArchivoChat(url:str,fname:str):
 def downloadrecording(recording_id, recording_name, dates):
         recording_data = webService.get_recording_data(recording_id)
         if recording_data != None:
-            filename = recording_id + " - " + recording_name.replace(':', ' ').replace('/', ' ').replace('"', '').replace('\'', '').replace(',', '').replace('?', '').replace("\\", ' ') + '.mp4'
-            chatFileName = 'Chat-' + filename
-            fullpath = './downloads/'+dates[0].replace(':', ' ')+'_'+dates[1].replace(':', ' ')+'/'
-            Path(fullpath).mkdir(exist_ok=True)
-            print(fullpath + filename)
-            descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
-            
-            if len(recording_data['chats']) == 0:
-                print("No chat on the recording")
-            else:
-                print("Downloaling chat")
-                downloadChats(recording_data['chats'][0],fullpath + chatFileName)
-            return True
+            try:
+                filename = recording_id + " - " + recording_name.replace(':', ' ').replace('/', ' ').replace('"', '').replace('\'', '').replace(',', '').replace('?', '').replace("\\", ' ') + '.mp4'
+                chatFileName = 'Chat-' + filename
+                fullpath = './downloads/'+dates[0].replace(':', ' ')+'_'+dates[1].replace(':', ' ')+'/'
+                Path(fullpath).mkdir(exist_ok=True)
+                print(fullpath + filename)
+                descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
+
+                if len(recording_data['chats']) == 0:
+                    print("No chat on the recording")
+                else:
+                    print("Downloaling chat")
+                    downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+                return True
+            except OSError:
+                print("Erro ao criar diretorio " + fullpath + filename)
+                return False
         else:
             return False
         
