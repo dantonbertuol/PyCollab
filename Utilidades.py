@@ -153,11 +153,10 @@ def crearArchivoChat(url:str,fname:str):
 
              
 
-def downloadrecording(recording_list, dates):
-      for recording in recording_list:
-        recording_data = webService.get_recording_data(recording['recording_id'])
+def downloadrecording(recording_id, recording_name, dates):
+        recording_data = webService.get_recording_data(recording_id)
         if recording_data != None:
-            filename = recording['recording_id'] + " - " + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace("\\", ' ') + '.mp4'
+            filename = recording_id + " - " + recording_name.replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '').replace("\\", ' ') + '.mp4'
             chatFileName = 'Chat-' + filename
             fullpath = './downloads/'+dates[0].replace(':', ' ')+'_'+dates[1].replace(':', ' ')+'/'
             Path(fullpath).mkdir(exist_ok=True)
@@ -169,6 +168,9 @@ def downloadrecording(recording_list, dates):
             else:
                 print("Downloaling chat")
                 downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+            return True
+        else:
+            return False
         
             
 
