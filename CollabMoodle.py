@@ -13,12 +13,12 @@ if __name__ == "__main__":
         print("Moodle Sesions...")
         moodlSession = ut.leerUUID(param[0])
         for sesion in moodlSession:
-            nombre_session = webService.get_moodle_sesion_name(sesion)
+            nombre_session, date_session = webService.get_moodle_sesion_name(sesion)
             if nombre_session == None or nombre_session == ' ':
                 print("Session name not found!")
             else:
                 print(nombre_session)
-                lista_grabaciones = webService.get_moodle_lista_grabaciones(nombre_session, dates, sesion)
+                lista_grabaciones = webService.get_moodle_lista_grabaciones(nombre_session, dates, date_session)
                 if lista_grabaciones is None:
                     print("There's no recording for: " + nombre_session)
                 else:

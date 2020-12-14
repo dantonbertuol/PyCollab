@@ -81,7 +81,7 @@ class MoodleControlador():
         r.encoding = 'utf-8'
         if r.status_code == 200:
             res = json.loads(r.text)
-            return res['name']
+            return res['name'], res['startTime']
         else:
             print("Error Session:", str(r))
 
@@ -126,7 +126,7 @@ class MoodleControlador():
         else:
             print("Error listaGrabación Moodle:", str(r))
 
-    def listaMoodleGrabaciones(self, sname, sdates, ssesion):
+    def listaMoodleGrabaciones(self, sname, sdates, sdate_session):
         endpoint = 'https://' + self.domain + '/recordings?name=' + sname
         credencial = {
             "Authorization": "Bearer " + self.token,
@@ -150,7 +150,7 @@ class MoodleControlador():
                             minutes=3 * 60)
                         dateBr = strToDate.strftime('%Y-%m-%d %H:%M:%S')
                         if 'storageSize' in res['results'][idx]:
-                            if sdates[0] <= dateBr <= sdates[1] and ssesion == res['results'][idx]['id']:
+                            if sdates[0] <= dateBr <= sdates[1] and sdate_session == res['results'][idx]['sessionStartTime']:
                                 print(dateBr)
                                 recording_ids.append({
                                     'recording_id': res['results'][idx]['id'],
@@ -160,7 +160,7 @@ class MoodleControlador():
                                     'created': dateBr
                                 })
                         else:
-                            if sdates[0] <= dateBr <= sdates[1] and ssesion == res['results'][idx]['id']:
+                            if sdates[0] <= dateBr <= sdates[1] and sdate_session == res['results'][idx]['sessionStartTime']:
                                 print(dateBr)
                                 recording_ids.append({
                                     'recording_id': res['results'][idx]['id'],
