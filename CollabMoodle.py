@@ -5,6 +5,7 @@ import sys
 
 if __name__ == "__main__":
     param = ut.mainMoodle(sys.argv[1:])
+    #param = 'moodle_plugin_sessions.txt', '', '2018-07-01 00:00:00,2018-12-31 00:00:00'
     webService = WebService()
     report = []
     dates = param[2].split(",")
@@ -17,7 +18,7 @@ if __name__ == "__main__":
                 print("Session name not found!")
             else:
                 print(nombre_session)
-                lista_grabaciones = webService.get_moodle_lista_grabaciones(nombre_session, dates)
+                lista_grabaciones = webService.get_moodle_lista_grabaciones(nombre_session, dates, sesion)
                 if lista_grabaciones is None:
                     print("There's no recording for: " + nombre_session)
                 else:

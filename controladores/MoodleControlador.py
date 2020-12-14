@@ -126,7 +126,7 @@ class MoodleControlador():
         else:
             print("Error listaGrabación Moodle:", str(r))
 
-    def listaMoodleGrabaciones(self, sname, sdates):
+    def listaMoodleGrabaciones(self, sname, sdates, ssesion):
         endpoint = 'https://' + self.domain + '/recordings?name=' + sname
         credencial = {
             "Authorization": "Bearer " + self.token,
@@ -150,7 +150,7 @@ class MoodleControlador():
                             minutes=3 * 60)
                         dateBr = strToDate.strftime('%Y-%m-%d %H:%M:%S')
                         if 'storageSize' in res['results'][idx]:
-                            if sdates[0] <= dateBr <= sdates[1]:
+                            if sdates[0] <= dateBr <= sdates[1] and ssesion == res['results'][idx]['id']:
                                 print(dateBr)
                                 recording_ids.append({
                                     'recording_id': res['results'][idx]['id'],
@@ -160,7 +160,7 @@ class MoodleControlador():
                                     'created': dateBr
                                 })
                         else:
-                            if sdates[0] <= dateBr <= sdates[1]:
+                            if sdates[0] <= dateBr <= sdates[1] and ssesion == res['results'][idx]['id']:
                                 print(dateBr)
                                 recording_ids.append({
                                     'recording_id': res['results'][idx]['id'],
