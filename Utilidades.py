@@ -159,7 +159,7 @@ def downloadrecording(recording_list, dates):
         if recording_data != None:
             filename = recording['recording_id'] + " - " + recording['recording_name'].replace(':', ' ').replace('/', ' ').replace('”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
             chatFileName = 'Chat-' + filename
-            fullpath = './downloads/'+dates[0]+'_'+dates[1]+'/'
+            fullpath = './downloads/'+dates[0].replace(':', ' ')+'_'+dates[1].replace(':', ' ')+'/'
             Path(fullpath).mkdir(exist_ok=True)
             print(fullpath + filename)
             descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
@@ -244,7 +244,7 @@ def crearReporte(reporte):
 
 
 def crearReporteMoodle(reporte, dates):
-   filename = './reports/Collab_Moodle_Session_RecordingReport_' + dates[0] + '_' + dates[1] + '.csv'
+   filename = './reports/Collab_Moodle_Session_RecordingReport_' + dates[0].replace(':', ' ') + '_' + dates[1].replace(':', ' ') + '.csv'
    header = ["Recording ID", "Recording Name", "Duration", "Storage Size (MB)", "Created Date"]
    file = open(filename, 'w',newline='', encoding='utf-8')
    writer = csv.writer(file)
