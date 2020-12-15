@@ -9,6 +9,7 @@ import json
 from cachetools import TTLCache
 import ssl
 import sys
+import time
 
 class SesionControlador():
     def __init__(self,url,token,cert):
@@ -86,13 +87,19 @@ class SesionControlador():
 
 
     def get_recording_data(self,recording_id):
-
-                # "Authorization: Bearer $token"
+        r = ''
+        # "Authorization: Bearer $token"
         authStr = 'Bearer ' + self.token
         url = 'https://' + self.url + '/recordings/' + recording_id + '/data'
-        r = requests.get(url,
-                         headers={'Authorization': authStr, 'Content-Type': 'application/json',
-                                  'Accept': 'application/json'}, verify=self.cert)
+        while r == '':
+            try:
+                r = requests.get(url,
+                                 headers={'Authorization': authStr, 'Content-Type': 'application/json',
+                                          'Accept': 'application/json'}, verify=self.cert)
+                break
+            except:
+                time.sleep(5)
+                continue
 
         if r.status_code == 200:
             res = json.loads(r.text)
