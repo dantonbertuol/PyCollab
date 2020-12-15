@@ -28,6 +28,10 @@ if __name__ == "__main__":
                         if lRet:
                             report.append([grabacion['recording_id'], grabacion['recording_name'], grabacion['duration'],
                                            grabacion['storageSize'], grabacion['created']])
+                        else:
+                            report.append(
+                                ['Erro no download', grabacion['recording_name'], grabacion['duration'],
+                                 grabacion['storageSize'], grabacion['created']])
 
         if len(report) > 0:
             print(ut.crearReporteMoodle(report, dates))
