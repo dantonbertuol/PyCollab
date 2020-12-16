@@ -157,7 +157,7 @@ def downloadrecording(recording_id, recording_name, dates):
         recording_data = webService.get_recording_data(recording_id)
         if recording_data != None:
             try:
-                filename = recording_id + " - " + recording_name.replace(':', ' ').replace('/', ' ').replace('"', '').replace('\'', '').replace(',', '').replace('?', '').replace("\\", ' ') + '.mp4'
+                filename = recording_id + " - " + recording_name.replace(':', ' ').replace('/', ' ').replace('"', '').replace('\'', '').replace(',', '').replace('?', '').replace("\\", ' ').replace('>', ' ').replace('<', ' ') + '.mp4'
                 chatFileName = 'Chat-' + filename
                 fullpath = './downloads/'+dates[0].replace(':', ' ')+'_'+dates[1].replace(':', ' ')+'/'
                 Path(fullpath).mkdir(exist_ok=True)
