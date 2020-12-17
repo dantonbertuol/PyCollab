@@ -8,7 +8,7 @@ if __name__ == "__main__":
     #param = 'moodle_plugin_sessions.txt', '', '2018-07-01 00:00:00,2018-12-31 00:00:00'
     webService = WebService()
     report = []
-    lRet = True
+    ret = 0
     dates = param[2].split(",")
     if param[0] != '' and param[1] == '':
         print("Moodle Sesions...")
@@ -24,11 +24,11 @@ if __name__ == "__main__":
                     print("There's no recording for: " + nombre_session)
                 else:
                     for grabacion in lista_grabaciones:
-                        lRet = ut.downloadrecording(grabacion['recording_id'],grabacion['recording_name'], dates)
-                        if lRet:
+                        ret = ut.downloadrecording(grabacion['recording_id'],grabacion['recording_name'], dates)
+                        if ret == 1:
                             report.append([grabacion['recording_id'], grabacion['recording_name'], grabacion['duration'],
                                            grabacion['storageSize'], grabacion['created']])
-                        else:
+                        elif ret == 2:
                             report.append(
                                 ['Erro no download', grabacion['recording_name'], grabacion['duration'],
                                  grabacion['storageSize'], grabacion['created']])

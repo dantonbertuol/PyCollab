@@ -8,6 +8,7 @@ import sys,getopt
 import json
 from pathlib import Path
 from time import sleep
+import os
 
 webService = WebService()
 
@@ -162,19 +163,23 @@ def downloadrecording(recording_id, recording_name, dates):
                 fullpath = './downloads/'+dates[0].replace(':', ' ')+'_'+dates[1].replace(':', ' ')+'/'
                 Path(fullpath).mkdir(exist_ok=True)
                 print(fullpath + filename)
-                descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
+                if not os.path.isfile(fullpath + filename):
+                    descargarGrabacion(recording_data['extStreams'][0]['streamUrl'],fullpath + filename)
 
-                if len(recording_data['chats']) == 0:
-                    print("No chat on the recording")
+                    if len(recording_data['chats']) == 0:
+                        print("No chat on the recording")
+                    else:
+                        print("Downloaling chat")
+                        downloadChats(recording_data['chats'][0],fullpath + chatFileName)
+                    return 1
                 else:
-                    print("Downloaling chat")
-                    downloadChats(recording_data['chats'][0],fullpath + chatFileName)
-                return True
+                    print("Arquivo ja baixado")
+                    return 3
             except OSError:
                 print("Erro ao criar diretorio " + fullpath + filename)
-                return False
+                return 2
         else:
-            return False
+            return 2
         
             
 
