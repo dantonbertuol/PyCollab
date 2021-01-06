@@ -161,7 +161,7 @@ def downloadrecording(recording_id, recording_name, dates):
     recording_data = webService.get_recording_data(recording_id)
     if recording_data != None:
         try:
-            filename = recording_id + " - " + recording_name.replace(':', ' ').replace('/', ' ').replace('"',
+            filename = recording_id + " - " + recording_name[0:150].replace(':', ' ').replace('/', ' ').replace('"',
                                                                                                          '').replace(
                 '\'', '').replace(',', '').replace('?', '').replace("\\", ' ').replace('>', ' ').replace('<',
                                                                                                          ' ').replace(
