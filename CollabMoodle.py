@@ -31,7 +31,10 @@ if __name__ == "__main__":
                     print("There's no recording for: " + nombre_session)
                 else:
                     for grabacion in lista_grabaciones:
-                        ret = ut.downloadrecording(grabacion['recording_id'],grabacion['recording_name'], dates)
+                        try:
+                            ret = ut.downloadrecording(grabacion['recording_id'],grabacion['recording_name'], dates)
+                        except:
+                            ret = 2
                         if ret == 1:
                             report.append([grabacion['recording_id'], grabacion['recording_name'], grabacion['duration'],
                                            grabacion['storageSize'], grabacion['created']])
