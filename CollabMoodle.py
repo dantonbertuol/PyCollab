@@ -5,7 +5,7 @@ import sys
 
 if __name__ == "__main__":
     param = ut.mainMoodle(sys.argv[1:])
-    #param = 'moodle_plugin_sessions.txt', '', '2018-07-01 00:00:00,2018-12-31 00:00:00'
+    #param = 'moodle_plugin_sessions.txt', '', '2020-08-01 00:00:00,2020-12-31 00:00:00'
     webService = WebService()
     report = []
     ret = 0
@@ -43,6 +43,14 @@ if __name__ == "__main__":
                                 report.append(
                                     ['Erro no download', grabacion['recording_name'], grabacion['duration'],
                                      grabacion['storageSize'], grabacion['created']])
+                            elif ret == 3:
+                                if [grabacion['recording_id'], grabacion['recording_name'], grabacion['duration'],
+                                               grabacion['storageSize'], grabacion['created']] in report:
+                                    print("EXISTE")
+                                else:
+                                    report.append(
+                                        [grabacion['recording_id'], grabacion['recording_name'], grabacion['duration'],
+                                         grabacion['storageSize'], grabacion['created']])
                         except:
                             print("Nao foi possivel criar o relatorio")
 
