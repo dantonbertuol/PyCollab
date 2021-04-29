@@ -110,7 +110,21 @@ class SesionControlador():
             return None
         else:
             print("Error: " + str(r) + "in recordingId: " + recording_id)
-            return None 
+            return None
 
-
+    def delete_recording(self, recording_id):
+        authStr = 'Bearer ' + self.token
+        url = 'https://' + self.url + '/recordings/' + recording_id
+        try:
+            r = requests.delete(url, headers={'Authorization': authStr, 'Content-Type': 'application/json',
+                                              'Accept': 'application/json'}, verify=self.cert)
+            r.raise_for_status()
+            if r.status_code == 200:
+                return True
+            elif r.status_code == 404:
+                return False
+            else:
+                return None
+        except requests.exceptions.HTTPError as e:
+            pass
     

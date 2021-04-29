@@ -570,3 +570,49 @@ def collabMinutes(fileName: str):
     else:
         return None
     f.close
+
+def listRecordingids(filename):
+    recids = []
+    with open(filename,encoding='utf-8') as reader:
+        for linea in reader:
+            contenido = linea.rstrip()
+            recids.append(str(contenido))
+    reader.close()
+    return recids
+
+def mainDelete(argv):
+    attendanceFile = ''
+    try:
+        opts,args = getopt.getopt(argv,"hf:", ["list="])
+    except getopt.GetoptError:
+        print("The correct params are:")
+        print('CollabDeleteRecordings.py -f <recodidingids_list.txt>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt == '-h':
+            print('CollabDeleteRecordings.py -f <recodidingids_list.txt>')
+            sys.exit()
+        elif opt in ('-f', '--list'):
+            attendanceFile = arg
+    return [attendanceFile]
+
+def crearReporteDelete(reporte):
+    filename = './reports/Collab_Delete_Recordings.csv'
+    headers = [ 'Recording Id', 'Status']
+    file = open(filename, 'w',newline='', encoding='utf-8')
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for x in range(len(reporte)):
+        registro = reporte[x]
+        recording_id = registro[0]
+        status = registro[1]
+        writer.writerow([recording_id,status])
+    file.close()
+    return "Report: Collab_Delete_Recordings.csv created!"
+
+def deleteRecording(recording_id):
+    delete_info = webService.delete_recording(recording_id)
+    if delete_info != None:
+        return True
+    else:
+        return delete_info

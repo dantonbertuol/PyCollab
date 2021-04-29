@@ -147,15 +147,7 @@ class WebService():
         jsonInfo = moodle.get_moodleLTI_recording_data(recording_id)
         return jsonInfo
 
-        
-
-        
-
-
-
-
-
-
-    
-    
-
+    def delete_recording(self, recording_id):
+        sessions = SesionControlador.SesionControlador(self.DOMAIN_C, self.getJot(), self.CERT)
+        delete_info = sessions.delete_recording(recording_id)
+        return delete_info
