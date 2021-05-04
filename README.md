@@ -1,7 +1,7 @@
 # PyCollab
 
 
-Python Blackoboard Collaborate script to download recording based on Blackboard Learn Course ID, or Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
+Python Blackboard Collaborate script to download recording based on Blackboard Learn Course ID, or Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 and get:
 <ul>
 <li>Recording Report in a CSV file (Recording_ID, Storage Size, Duration, Creation Date, Duration) on /reports folder
@@ -11,7 +11,7 @@ and get:
 <li>Command line attributes depending on the scenario: Learn Course,Blackboard Learn Course UUID, Moodle plugin session ID, Moodle LTI Tool.
 </li>
 
-
+<li><b>This script is NOT supported on Behind the Blackboard.</b></li>
 </ul>
 
 
@@ -24,7 +24,7 @@ Will depent on Computer operation system how Python is referenced on command lin
 <br> 
  Mac OS: 
  <ul> 
- <li>(HomeBrew) brew install python3</li>
+ <li>(HomeBrew)  brew install python3</li>
  <li>normally python3 is the alias to run python scripts when install python 3.7+</li>
 </ul> 
 Windows OS: 
@@ -68,10 +68,12 @@ edit content of Config.py file
 ```
 
 
-### Note
+### Note: Backboard Credentials / Integration on Learn
 
-In order to get the Learn credentials, go to developer.blackboard.com and register from there to grab the Learn credentials for their application, it is also imperative to remind them that they are creating an application based on your code, so they need to register as a developer.Then on your Blackboard Learn environment, as admin role user, go to Rest API Integration a create an integration using data provided from developer.blackboard.com before.
+In order to get the Learn credentials, go to <i>developer.blackboard.com</i> and register from there to grab the Learn credentials for their application, it is also imperative to remind them that they are creating an application based on your code, so they need to register as a developer.Then on your Blackboard Learn environment, as admin role user, go to Rest API Integration a create an integration using data provided from developer.blackboard.com before.<br>
+<p>Check <a href="https://github.com/zerausolrac/PyCollab/blob/master/LearnPyCollab.pdf">Learn Integration</a></p>
 
+### Note: Backboard Credentials for Collaborate
 
 Now, for Collaborate production they CAN and MUST create a ticket on behind the blackboard requesting their credentials.
 
@@ -121,13 +123,13 @@ python3 Collab.py -e learn_uuids.txt -w 10
 
 <b>Report Learn-Collaborate</b>
 <li>
-If you need to know about recording storage size, duration and  recording ID before download any recording you can create a report, where -f is point to learn_courses.txt file that have Blackboard Learn courses ID listed by row.
+If you need to know about recording storage size, duration and  recording ID before download any recording you can create a report, where -f is point to learn_courses.txt file that have Blackboard Learn courses ID listed by row, and -w is a value of weeks back for as starting point of searching for recordings.
 <b>Note:</b>If the recording has public_access disabled, the recording won't be readed by script and will 403 report will be generated with list recording_id.
 
 </li>
 
 ```
-python3 CollabReport.py -f learn_courses.txt
+python3 CollabReport.py -f learn_courses.txt -w 10
 ```
 
 
@@ -191,9 +193,49 @@ python3 CollabRecordingsDownload.py -f RecordingsReport.csv
 <br>
 
 
-# Video
 
-<a href="https://www.youtube.com/watch?v=UxKZvBw_-NU" target="new">English</a>
+## Delete recordings
+### Considerations
+
+<b>About deletion process</b>
+<ul>
+<li>
+Use this feature at your own risk
+</li>
+<li>
+ It is soft-deletion, this means, deletion process will remove recording after 30 days from deletion day
+</li>
+<li>
+ When deleted from API, It is not taken in count for total calculation of storage for Collaborate Entitlements
+</li>
+<li>
+On reporting only takes in count Blackboard Learn-Collab in Blackboard Data, there is no way to caculate Collab Scheduler total storage using API
+</li>
+<li>
+It is not possible to recover a deleted recording using Collaborate’s API, for that cases will need to create a Blackboard Support ticket  for it</li>
+
+</ul>
+
+```
+python3 CollabDeleteRecordings.py -f recordingsid_list.txt   
+```
+
+Where <b>recordingids_list.txt </b> is a text-plain o-column-list with all recordingsId that will be deleted from Blackboard Collaborate instance.
+
+
+<pre>
+  ____    _                  _      _                                  _ 
+ |  _ \  | |                | |    | |                                | |
+ | |_) | | |   __ _    ___  | | __ | |__     ___     __ _   _ __    __| |
+ |  _ <  | |  / _` |  / __| | |/ / | '_ \   / _ \   / _` | | '__|  / _` |
+ | |_) | | | | (_| | | (__  |   <  | |_) | | (_) | | (_| | | |    | (_| |
+ |____/  |_|  \__,_|  \___| |_|\_\ |_.__/   \___/   \__,_| |_|     \__,_|
+                                                                             
+</pre>
+
+# Tutorials
+
+<a href="https://www.youtube.com/watch?v=UxKZvBw_-NU" target="new">Downloading - English</a>
 <br>
 <br>
-<a href="https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be" target="new"> Español</a>
+<a href="https://www.youtube.com/watch?v=0ov-HZJeAE0&feature=youtu.be" target="new"> Downloading - Español</a>
