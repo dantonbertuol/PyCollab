@@ -2,7 +2,7 @@
 # TDS #
 #######
 .idea
-__pycache__/
+*__pycache__
 controladores/__pycache__/*
 *.pyc
 
