@@ -1,8 +1,9 @@
 
 # TDS #
 #######
-*.ideia
-*__pycache__
+.idea
+__pycache__/
+controladores/__pycache__/
 
 #VS Code#
 Config.py
