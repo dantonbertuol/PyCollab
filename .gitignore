@@ -3,7 +3,7 @@
 #######
 .idea
 __pycache__/
-controladores/__pycache__/
+controladores/__pycache__/*
 
 #VS Code#
 Config.py
