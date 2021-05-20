@@ -1,0 +1,8 @@
+
+# TDS #
+#######
+*.ideia
+*__pycache__
+
+#VS Code#
+Config.py
