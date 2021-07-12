@@ -251,7 +251,7 @@ def crearReporte(reporte):
         recording_name = registro[2]
         duration = calcularTiempo(int(registro[3] / 1000))
         storage = str(round(float(registro[4]) / 1000000, 2))
-        created = convertirFecha(registro[5])
+        created = (registro[5])
         writer.writerow([sessionOwner, recording_id, recording_name, duration, storage, created])
     file.close()
     return "Report: Collab_Download_RecordingReport.csv created!"
