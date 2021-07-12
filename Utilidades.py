@@ -212,9 +212,9 @@ def downloadOneRecording(recording, course_uuid):
             return None
 
 
-def downloadRecordingsUUID(recording_lista, idSession):
+def downloadRecordingsUUID(recording_lista, idSession, idRecording):
     if recording_lista != None:
-        filename = idSession + " - " + recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace(
+        filename = idRecording + " - " + recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace(
             '”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
         chatFileName = 'Chat-' + filename
         fullpath = './downloads/'
