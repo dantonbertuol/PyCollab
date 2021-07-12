@@ -79,7 +79,10 @@ def listaGrabacionCollabData(recording_info):
                               'recording_name': recording_info['name'], 'duration': recording_info['duration'],
                               'created': recording_info['created'], 'size': size, 'chat': chat}
         else:
-            size = recording_storageSize(recording_info['extStreams'][0]['streamUrl'])
+            try:
+                size = recording_storageSize(recording_info['extStreams'][0]['streamUrl'])
+            except:
+                size = 0
             chats = recording_info['chats']
             if len(chats) > 0:
                 chat = recording_info['chats'][0]['url']
