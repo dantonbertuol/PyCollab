@@ -222,12 +222,15 @@ def downloadRecordingsUUID(recording_lista, idSession, idRecording):
         chatFileName = 'Chat-' + filename
         fullpath = './downloads/'
         print(fullpath + filename)
-        descargarGrabacion(recording_lista['downloadUrl'], fullpath + filename)
-        if recording_lista['chat'] == None:
-            print("No chat on the recording")
+        if not os.path.isfile(fullpath + filename):
+            descargarGrabacion(recording_lista['downloadUrl'], fullpath + filename)
+            if recording_lista['chat'] == None:
+                print("No chat on the recording")
+            else:
+                print("Downloaling chat")
+                downloadChatsFromURL(recording_lista['chat'], fullpath + chatFileName)
         else:
-            print("Downloaling chat")
-            downloadChatsFromURL(recording_lista['chat'], fullpath + chatFileName)
+            print("Arquivo já baixado")
     else:
         print("No data from Recording ID on Collaborate")
 
