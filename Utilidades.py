@@ -230,8 +230,11 @@ def downloadRecordingsUUID(recording_lista, idSession, idRecording):
             if recording_lista['chat'] == None:
                 print("No chat on the recording")
             else:
-                print("Downloaling chat")
-                downloadChatsFromURL(recording_lista['chat'], fullpath + chatFileName)
+                try:
+                    print("Downloaling chat")
+                    downloadChatsFromURL(recording_lista['chat'], fullpath + chatFileName)
+                except:
+                    print("Erro ao realizar download do chat.")
         else:
             print("Arquivo já baixado")
     else:
