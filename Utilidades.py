@@ -220,7 +220,7 @@ def downloadOneRecording(recording, course_uuid):
 
 def downloadRecordingsUUID(recording_lista, idSession, idRecording):
     if recording_lista != None:
-        filename = idRecording + " - " + recording_lista[0:150].replace(':', ' ').replace('/', ' ').replace('"',
+        filename = idRecording + " - " + recording_lista['recording_name'][0:150].replace(':', ' ').replace('/', ' ').replace('"',
                                                                                                             '').replace(
             '\'', '').replace(',', '').replace('?', '').replace("\\", ' ').replace('>', ' ').replace('<',
                                                                                                      ' ').replace(
