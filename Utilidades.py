@@ -168,7 +168,7 @@ def downloadrecording(recording_id, recording_name, dates):
     if recording_data != None:
         try:
             filename = recording_id + " - " + recording_name[0:150].replace(':', ' ').replace('/', ' ').replace('"',
-                                                                                                         '').replace(
+                                                                                                                '').replace(
                 '\'', '').replace(',', '').replace('?', '').replace("\\", ' ').replace('>', ' ').replace('<',
                                                                                                          ' ').replace(
                 '|', ' ').replace('*', ' ').replace('!', ' ') + '.mp4'
@@ -220,8 +220,11 @@ def downloadOneRecording(recording, course_uuid):
 
 def downloadRecordingsUUID(recording_lista, idSession, idRecording):
     if recording_lista != None:
-        filename = idRecording + " - " + recording_lista['recording_name'].replace(':', ' ').replace('/', ' ').replace(
-            '”', '').replace('“', '').replace(',', '').replace('?', '') + '.mp4'
+        filename = idRecording + " - " + recording_lista[0:150].replace(':', ' ').replace('/', ' ').replace('"',
+                                                                                                            '').replace(
+            '\'', '').replace(',', '').replace('?', '').replace("\\", ' ').replace('>', ' ').replace('<',
+                                                                                                     ' ').replace(
+            '|', ' ').replace('*', ' ').replace('!', ' ') + '.mp4'
         chatFileName = 'Chat-' + filename
         fullpath = './downloads/'
         print(fullpath + filename)
@@ -583,24 +586,26 @@ def collabMinutes(fileName: str):
         return None
     f.close
 
+
 def listRecordingids(filename):
     recids = []
-    with open(filename,encoding='utf-8') as reader:
+    with open(filename, encoding='utf-8') as reader:
         for linea in reader:
             contenido = linea.rstrip()
             recids.append(str(contenido))
     reader.close()
     return recids
 
+
 def mainDelete(argv):
     attendanceFile = ''
     try:
-        opts,args = getopt.getopt(argv,"hf:", ["list="])
+        opts, args = getopt.getopt(argv, "hf:", ["list="])
     except getopt.GetoptError:
         print("The correct params are:")
         print('CollabDeleteRecordings.py -f <recodidingids_list.txt>')
         sys.exit(2)
-    for opt,arg in opts:
+    for opt, arg in opts:
         if opt == '-h':
             print('CollabDeleteRecordings.py -f <recodidingids_list.txt>')
             sys.exit()
@@ -608,19 +613,21 @@ def mainDelete(argv):
             attendanceFile = arg
     return [attendanceFile]
 
+
 def crearReporteDelete(reporte):
     filename = './reports/Collab_Delete_Recordings.csv'
-    headers = [ 'Recording Id', 'Status']
-    file = open(filename, 'w',newline='', encoding='utf-8')
+    headers = ['Recording Id', 'Status']
+    file = open(filename, 'w', newline='', encoding='utf-8')
     writer = csv.writer(file)
     writer.writerow(headers)
     for x in range(len(reporte)):
         registro = reporte[x]
         recording_id = registro[0]
         status = registro[1]
-        writer.writerow([recording_id,status])
+        writer.writerow([recording_id, status])
     file.close()
     return "Report: Collab_Delete_Recordings.csv created!"
+
 
 def deleteRecording(recording_id):
     delete_info = webService.delete_recording(recording_id)
