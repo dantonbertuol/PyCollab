@@ -94,9 +94,12 @@ def listaGrabacionCollabData(recording_info):
                     chat = None
             except:
                 chat = None
-            recording_data = {'downloadUrl': recording_info['extStreams'][0]['streamUrl'],
-                              'recording_name': recording_info['name'], 'duration': recording_info['duration'],
-                              'created': recording_info['created'], 'size': size, 'chat': chat}
+            try:
+                recording_data = {'downloadUrl': recording_info['extStreams'][0]['streamUrl'],
+                                  'recording_name': recording_info['name'], 'duration': recording_info['duration'],
+                                  'created': recording_info['created'], 'size': size, 'chat': chat}
+            except:
+                recording_data = None
     return recording_data
 
 
