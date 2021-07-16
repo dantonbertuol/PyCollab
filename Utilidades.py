@@ -177,7 +177,7 @@ def downloadrecording(recording_id, recording_name, dates):
                                                                                                                 '').replace(
                 '\'', '').replace(',', '').replace('?', '').replace("\\", ' ').replace('>', ' ').replace('<',
                                                                                                          ' ').replace(
-                '|', ' ').replace('*', ' ').replace('!', ' ') + '.mp4'
+                '|', ' ').replace('*', ' ').replace('!', ' ').replace("\\t", ' ') + '.mp4'
             chatFileName = 'Chat-' + filename
             fullpath = './downloads/' + dates[0].replace(':', ' ') + '_' + dates[1].replace(':', ' ') + '/'
             Path(fullpath).mkdir(exist_ok=True)
